@@ -11,9 +11,9 @@
             <el-header>
                 <el-row>
                     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" style="margin:0%"
                             @select="handleSelect">
-                            <el-row type="flex" justify="center">
+                            <el-row type="flex" justify="center" class="header-row">
                                 <el-col :span="3">
                                     <el-image class="logo-image" :src="require('@/assets/images/logo.jpg')" :fit="fit">
                                     </el-image>
@@ -21,9 +21,69 @@
                                 </el-col>
                                 <el-col :span="2" v-for="(item,index) in menuList" :key="index"
                                     class="header-title menu-show">
-                                    <el-link :href="item.url" target="_blank">
-                                        <el-menu-item :index="index+1" class="">{{item.name}}</el-menu-item>
+
+                                    <el-link :href="item.url" target="_blank" v-if="item.url.length === 0">
+                                        <el-menu-item :index="index+1">{{item.name}}</el-menu-item>
                                     </el-link>
+                                    <el-submenu menu-trigger="click" :index="index+1" v-if="item.url.length !== 0">
+                                        <template slot="title">{{item.name}}</template>
+                                        <el-menu-item class="navbar-item" 
+                                            :index="index+1+'-'+number" v-for="(test,number) in item.url" :key="number">
+                                            <el-link :href="item.url" target="_blank" :underline="false">
+                                                {{test.secondTitle}}
+                                                <i class="el-icon-top-right"></i>
+                                            </el-link>
+                                        </el-menu-item>
+
+                                        <!-- <el-row v-if="item.flag === '1'" style="width: 100%;">
+                                            <el-col :span="9" :offset="3" style="text-align: left;padding: 2%;"
+                                                v-for="(test,number) in item.url" :key="number">
+                                                <div class="item-title">{{test.secondTitle}}</div>
+                                                <div class="title-content" style="width:80%">
+                                                    {{test.secondContetn}}
+                                                </div>
+                                                <div>
+                                                    <el-button type="primary" round>{{test.buttonName}}</el-button>
+                                                </div>
+                                                <div style="width:80%">
+                                                    <el-image style="border-radius: 10%;" :src="test.src"></el-image>
+                                                </div>
+                                            </el-col>
+
+                                        </el-row>
+                                        <el-row v-if="item.flag === '2'">
+                                            <el-col :span="9" :offset="3" style="padding: 2%;">
+                                                <el-row>
+                                                    <el-col :span="10" :offset="1"
+                                                        style="border-top:1px solid #cccccc;padding: 2% 0;"
+                                                        v-for="(test,number) in item.url" :key="number">
+                                                        <div style="font-size: 16px;font-weight:bold">
+                                                            {{test.secondTitle}}</div>
+                                                        <div style="overflow:hidden;height: 1.3em;font-size: 12px;">
+                                                            {{test.secondContetn}}
+                                                        </div>
+                                                    </el-col>
+
+                                                </el-row>
+                                            </el-col>
+                                            <el-col :span="12" style="padding: 2%;background: #E4E7ED;">
+                                                <div style="font-size:20px;font-weight:bold;margin-bottom:1%;">
+                                                    {{item.thirdTitle}}</div>
+                                                <el-row style="border-top:1px solid #C0C4CC;padding: 2% 0;width: 80%;"
+                                                    v-for="(fest,number) in item.thirdList" :key="number">
+                                                    <el-col :span="24">
+                                                        <div style="font-size: 16px;font-weight:bold">{{fest.titleName}}
+                                                            <i class="el-icon-s-promotion" style="float: right;"></i>
+                                                        </div>
+
+                                                    </el-col>
+                                                </el-row>
+
+
+                                            </el-col>
+                                        </el-row> -->
+
+                                    </el-submenu>
                                 </el-col>
 
                                 <el-col :span="9" :offset="1" class="header-title search-input">
@@ -42,17 +102,17 @@
 
                             </el-row>
                         </el-menu>
-                        <el-drawer :visible.sync="drawer" :modal="false" size="100%" :direction="direction" show-close>
-                            <el-row type="flex" v-for="(item,index) in menuList" :key="index"
-                                style="margin:2% 0;font-size: 24px;">
-                                <el-col :span="4" style="text-align: left;margin-left: 2%;">
-                                    <el-link :href="item.url" target="_blank">
+                        <el-drawer :visible.sync="drawer" :modal="false" size="100%" :direction="direction"
+                            :show-close="false">
+                            <el-row type="flex" class="drawer-row" v-for="(item,index) in menuList" :key="index">
+                                <el-link :href="item.url" target="_blank" :underline="false">
+                                    <el-col :span="4" class="drawer-col">
                                         <span class="title-drawer">{{item.name}}</span>
-                                    </el-link>
-                                </el-col>
-                                <el-col :span="1" :offset="19">
-                                    <span class="title-drawer">></span>
-                                </el-col>
+                                    </el-col>
+                                    <el-col :span="1" :offset="19">
+                                        <span class="title-drawer"><i class="el-icon-arrow-right"></i></span>
+                                    </el-col>
+                                </el-link>
                             </el-row>
                         </el-drawer>
                     </el-col>
@@ -62,7 +122,7 @@
                 <!-- 走马灯轮播图 -->
                 <el-row style="margin:1% 0%">
                     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                        <el-carousel :interval="4000" type="card" :height="carouselHeight+'px'">
+                        <el-carousel :interval="4000" :height="carouselHeight+'px'">
                             <template :slot-scope="banners">
                                 <el-carousel-item v-for="(item, index) in banners" :key="index">
                                     <el-image style="width: 100%; height: 100%" fit="fill" :src="item.url"
@@ -77,9 +137,9 @@
                 <el-divider><i class="el-icon-help"></i>科技拥抱生活</el-divider>
 
                 <!-- 分类内容 -->
-                <el-row :gutter="20" v-for="(item,index) in contentDataList" :key="index"
-                    style="background:#ffffff;margin:2% 0; box-shadow: 0 2px 12px 0 rgb(0 0 0 / 5%);">
-                    <el-col class="content-col" :xs="24" :sm="24" :md="24" :lg="24" :xl="6">
+                <el-row :gutter="20" type="flex" justify="space-between" v-for="(item,index) in contentDataList"
+                    :key="index" style="background:#ffffff;margin:2% 0; box-shadow: 0 2px 12px 0 rgb(0 0 0 / 5%);">
+                    <el-col class="content-col" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                         <el-row class="row-content" v-if="(index+1) % 2 !== 0">
                             <el-col :span="8">
                                 <el-image style="border-radius: 10%;" :src="src"></el-image>
@@ -140,31 +200,14 @@
                 </el-row>
             </el-main>
             <el-footer style="height:100%;">
-                <el-row style="margin:2% 0%;text-align: left;">
+                <el-row class="footer-wrapper">
                     <div v-for="(item,index) in footerList" :key="index">
-                        <el-col :span="7" :offset="4" v-if="index === 0">
-                            <div style="margin-bottom:2%;font-weight: bold;">{{item.footerTitle}}</div>
-                            <div style="margin:1% 0%" v-for="(secondaryTitle,index) in item.contentList"
-                                :key="index"><div></div>{{secondaryTitle.footerContent}}</div>
-                        </el-col>
-                        <el-col :span="6" v-if="index !== 0">
-                            <div style="margin-bottom:2%;font-weight: bold;">{{item.footerTitle}}</div>
-                            <div style="margin:1% 0%" v-for="(secondaryTitle,index) in item.contentList"
-                                :key="index">{{secondaryTitle.footerContent}}</div>
+                        <el-col :span="6" class="foot-col">
+                            <div class="footer-title">{{item.footerTitle}}</div>
+                            <div class="footer-link" v-for="(secondaryTitle,index) in item.contentList" :key="index">
+                                {{secondaryTitle.footerContent}}</div>
                         </el-col>
                     </div>
-
-                    <!-- <el-col :span="6">
-                    <div style="margin-bottom:2%;font-weight: bold;">资料与文档</div>
-                    <div style="margin:1% 0%">文档</div>
-                    <div style="margin:1% 0%">博客</div>
-                </el-col>
-                  <el-col :span="6">
-                    <div style="margin-bottom:2%;font-weight: bold;">关于我们</div>
-                    <div style="margin:1% 0%">关于Breze</div>
-                    <div style="margin:1% 0%">领导团队</div>
-                    <div style="margin:1% 0%">联系我们</div>
-                </el-col> -->
                 </el-row>
                 <div style="position: relative;bottom: 1%;">© Breze 2022. All rights reserved.</div>
             </el-footer>
@@ -192,18 +235,69 @@
                 thought: [],
                 menuList: [{
                         name: "首页",
-                        url: "www.baidu.com"
+                        url: []
                     },
                     {
                         name: "处理中心",
-                        url: "https://www.csdn.net/?spm=1001.2101.3001.4476"
+                        flag: "1",
+                        url: [{
+                                secondTitle: "222222",
+
+                            },
+                            {
+                                secondTitle: "222222",
+
+                            },
+                            {
+                                secondTitle: "222222",
+
+                            },
+                            {
+                                secondTitle: "222222",
+
+                            },
+                        ]
 
                     },
                     {
-                        name: "处理中心"
+                        name: "处理中心",
+                        flag: "2",
+                        url: [{
+                                secondTitle: "111111",
+
+                            },
+                            {
+                                secondTitle: "111111",
+
+                            },
+                            {
+                                secondTitle: "111111",
+
+                            },
+                            {
+                                secondTitle: "111111",
+
+                            },
+
+                        ],
+                        thirdTitle: "快捷操作",
+                        thirdList: [{
+                                titleName: "首页"
+                            },
+                            {
+                                titleName: "首页"
+                            },
+                            {
+                                titleName: "首页"
+                            },
+                            {
+                                titleName: "首页"
+                            },
+                        ]
                     },
                     {
-                        name: "处理中心"
+                        name: "关于我们",
+                        url: []
                     },
 
                 ],
@@ -284,7 +378,9 @@
                 ],
                 src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
                 carouselHeight: 0,
-                screenWidth: 0
+                screenWidth: 0,
+                divScreenWidth: 0,
+                menuItemWidth: window.innerWidth,
             };
         },
         mounted() {
@@ -299,11 +395,11 @@
             getScreenWidth() {
                 // 首次加载时,初始化高度
                 this.screenWidth = window.innerWidth
-                this.carouselHeight = 400 / 1450 * this.screenWidth
+                this.carouselHeight = 600 / 1450 * this.screenWidth
                 // 窗口大小发生改变
                 window.onresize = () => {
                     this.screenWidth = window.innerWidth
-                    this.carouselHeight = 400 / 1450 * this.screenWidth
+                    this.carouselHeight = 600 / 1450 * this.screenWidth
                 }
             },
             /**
@@ -386,7 +482,6 @@
         },
     };
 </script>
-
 <style scoped>
     .page {
         background: #F2F4F8;
@@ -408,16 +503,16 @@
         background: #C0C4CC;
     }
 
-    body>.el-container {
+    body>>>.el-container {
         margin-bottom: 40px;
-    }
-
-    .el-menu-item.is-active {
-        border-bottom: 2px solid #409EFF;
     }
 
     .header-title {
         margin-top: 4px;
+    }
+
+    .header-row {
+        position: relative;
     }
 
     .logo-image {
@@ -432,21 +527,13 @@
         position: absolute;
         top: 30%;
         left: 10%;
-        font-size: 18px;
+        font-size: 20px;
         color: #4490f1;
     }
 
-    .login-register {
-        position: absolute;
-        top: 6%;
-        right: 6%;
-    }
 
-    .el-row>>>.el-menu {
-        width: 100%;
-        position: fixed;
-        top: 0;
-        z-index: 999;
+    .header-title>>>.el-submenu__icon-arrow {
+        right: 12%;
     }
 
     .search-input {
@@ -482,55 +569,76 @@
     }
 
     .el-drawer__wrapper>>>.el-drawer.rtl {
-        height: 60%;
         top: 60px;
         background: #303133;
+    }
+
+    .drawer-row {
+        font-size: 24px;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .drawer-row>>>.el-link {
+        padding: 2% 0;
+        width: 100%;
+    }
+
+    .drawer-row>.el-link:hover {
+        background: #909399;
+    }
+
+    .drawer-row>.el-link>>>.el-link--inner {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .drawer-col {
+        width: 100%;
+        text-align: left;
+        margin-left: 2%;
     }
 
     .title-drawer {
         font-size: 16px;
         color: #ffffff;
     }
+    .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title{
+        padding: 0;
+    }
+    .navbar-item >>>.el-link {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
+    .navbar-item>.el-link:hover {
+        background:#E4E7ED;
+        color:#303133
+    }
+    .navbar-item>.el-link>>>.el-link--inner {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding:0 10px
+    }
     .min-menu {
         display: none;
     }
 
     .el-menu-demo {
         height: 60px;
+        width: 100%;
     }
-
-    /* .text {
-        font-size: 14px;
-    }
-
-    .text>>>.el-link {
-        display: block;
-        font-size: 14px;
-    } */
-
-    /* .item {
-        margin-bottom: 18px;
-    } */
-
-    /* .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
-
-    .clearfix:after {
-        clear: both;
-    } */
 
     .el-card.is-always-shadow {
         box-shadow: 0 2px 12px 0 rgb(0 0 0 / 25%);
     }
-
-    /* .box-card {
-        width: 100%;
-        border-radius: 25px;
-    } */
 
     .item-title {
         /* width: 65%; */
@@ -556,24 +664,50 @@
         flex-flow: row wrap;
         box-sizing: border-box;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
     }
 
     .title-button {
         margin-top: 5%;
-        width: 60%;
+        width: 80%;
     }
 
     .content-col {
         margin: 2% 0;
     }
 
+    .footer-wrapper {
+        display: flex;
+        width: 100%;
+        margin: 2% auto;
+        text-align: left;
+        justify-content: space-between;
+    }
+
+    .footer-wrapper .foot-col {
+        width: 100%;
+
+    }
+
+    .footer-title {
+        width: 100%;
+        margin-bottom: 2%;
+        font-weight: bold;
+    }
+
+    .footer-link {
+        margin: 4% 0%;
+    }
 
     @media (min-width:1200px) and (max-width:1280px) {
+
         /* .text>>>.el-link {
             display: block;
             font-size: 12px;
         } */
+        .header-title>>>.el-submenu__icon-arrow {
+            right: 5%;
+        }
     }
 
     @media (max-width:1200px) {
@@ -585,6 +719,10 @@
             overflow: hidden;
             margin: 5% 0;
         }
+
+        .header-title>>>.el-submenu__icon-arrow {
+            right: -5%;
+        }
     }
 
 
@@ -592,29 +730,18 @@
         .menu-show {
             display: none;
         }
-        
+
         .min-menu {
             display: inline;
         }
-
-        /* .logo-name {
-            position: absolute;
-            top: 30%;
-            left: 13%;
-
-        } */
 
         .el-input-group {
             width: 100%;
         }
 
-        /* .box-card {
-            width: 100%;
-
-        } */
         .logo-name {
-        display: none;
-    }
+            display: none;
+        }
     }
 
     @media (max-width: 768px) {
@@ -626,13 +753,6 @@
             display: inline;
         }
 
-        /* .logo-name {
-            position: absolute;
-            top: 30%;
-            left: 17%;
-
-        } */
-
         .el-input-group {
             width: 100%;
         }
@@ -641,10 +761,6 @@
             font-size: 12px;
         }
 
-        /* .box-card {
-            width: 100%;
-
-        } */
         .item-title {
             /* width: 65%; */
             white-space: nowrap;
@@ -659,7 +775,7 @@
             position: relative;
             line-height: 1.4em;
             font-size: 12px;
-            height: 3.0em;
+            height: 2.8em;
             overflow: hidden;
             margin: 3% 0;
         }
@@ -670,13 +786,33 @@
         }
     }
 
-    @media (max-width: 479) {
-        .row-content {
-            display: inline;
+    @media (max-width: 500px) {
+        .title-button {
+            margin-top: 3%;
+            width: 80%;
+        }
 
-            box-sizing: border-box;
-            align-items: center;
-            justify-content: center;
+        .footer-wrapper {
+
+            width: 100%;
+
+
+
+            display: flex;
+            flex-flow: column;
+            justify-content: space-evenly;
+
+            padding: 0 2%;
+        }
+
+        .footer-title {
+            width: 100%;
+            margin-bottom: 2%;
+            font-weight: bold;
+        }
+
+        .footer-link {
+            margin: 4% 5%;
         }
     }
 </style>

@@ -24,5 +24,7 @@ html,
 	a {
 		text-decoration: none;
 	}
-
+	.el-menu--horizontal >>> .navbar-item{
+        padding: 0;
+    }
 </style>
