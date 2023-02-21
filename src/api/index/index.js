@@ -8,34 +8,19 @@ export default{
       method: 'get'
     })
   },
-  // 分类数据获取
-  getNotifyInfo(params){
+  // 获取导航信息
+  getNavbarList(param){
     return axios({
-      url: '/breze/portal/notify/select',
+      url: '/breze/portal/navbar/select',
       method: 'get',
-      params: params
+      params: param
     })
   },
-  getNewsInfo(params){
+  getContentList(param){
     return axios({
-      url: '/breze/portal/news/select',
+      url: '/breze/portal/mainContent/findAllData',
       method: 'get',
-      params: params
+      params: param
     })
-  },
-  getPresenceInfo(params){
-    return axios({
-      url: '/breze/portal/presence/select',
-      method: 'get',
-      params: params
-    })
-  },
-  getThoughtInfo(params){
-    return axios({
-      url: '/breze/portal/thought/select',
-      method: 'get',
-      params: params
-    })
-  },
-
+  }
 }
