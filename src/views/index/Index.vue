@@ -60,7 +60,7 @@
                         {{this.contentDataList[1].mainTitle}}
                     </div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
-                        <el-tab-pane :label="item.mainTitle" :name="index.toString()"
+                        <el-tab-pane :label="item.mainTitle.toString()" :name="index.toString()"
                             v-for="(item,index) in this.contentDataList[1].children" :key="index">
                             <el-row type="flex" justify="center" style="margin:0 10%;border-radius:16px">
                                 <el-col :span="12">
@@ -69,13 +69,13 @@
                                 <el-col :span="12"
                                     style="color:#ffffff;background-image: url('https://i-1.lanrentuku.com/2020/12/29/20d1e770-88b4-4574-867f-a3bddc433e9d.jpg?imageView2/2/w/500');border-radius:0 16px 16px 0">
                                     <div
-                                        style="display:flex;justify-content: center;flex-direction:column;align-items:center;height:100%;margin: 0 5%;">
+                                        style="display:flex;justify-content: center;flex-direction:column;align-items:center;height:100%;margin: 0 5%;text-align: left;">
                                         <div class="item-title">{{item.subtitle}}</div>
                                         <div class="title-content">
                                             {{item.titleInfo}}
                                         </div>
                                         <div>
-                                            <el-button class="title-button" type="primary">查看详情></el-button>
+                                            <el-button class="title-button" @click="toDetail(item.id,item.routerPath)" type="primary">查看详情></el-button>
                                         </div>
                                     </div>
 
@@ -85,63 +85,6 @@
 
                     </el-tabs>
                 </div>
-
-
-                <!-- <el-row :gutter="20" type="flex" justify="space-between" v-for="(item,index) in contentDataList"
-                    :key="index" style="background:#ffffff;margin:2% 0; box-shadow: 0 2px 12px 0 rgb(0 0 0 / 5%);">
-                    <el-col class="content-col" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                        <el-row class="row-content" v-if="(index+1) % 2 !== 0">
-                            <el-col :span="8">
-                                <el-image style="border-radius: 10%;" :src="src"></el-image>
-                            </el-col>
-                            <el-col :span="8" :offset="1" style="text-align:center">
-                                <div class="item-title">学社是哪个</div>
-                                <div class="title-content">
-                                    通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号
-
-                                </div>
-                                <div>
-                                    <el-button class="title-button" type="primary">查看详情></el-button>
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row class="row-content" v-if="(index+1) % 2 === 0" style="flex-direction: row-reverse;">
-                            <el-col :span="8" :offset="1">
-                                <el-image style="border-radius: 10%;" :src="src"></el-image>
-                            </el-col>
-                            <el-col :span="8" :offset="1" style="text-align:center">
-                                <div class="item-title">学社是哪个</div>
-                                <div class="title-content">
-                                    通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号通知公告六号
-
-                                </div>
-                                <div>
-                                    <el-button class="title-button" type="primary">查看详情></el-button>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                    </el-col>
-                </el-row> -->
-
-                <!-- <div>
-                    <el-row type="flex" justify="center"
-                        style="background:#000;margin:0 10%;border-radius:16px;height: 200px;">
-                        <div class="showAnimate" style="background: #fff;margin: 0 1%;position: relative;"
-                            @click="eventMethod" v-for="(item,index) in contentDataList" :key="index">
-                            <div
-                                style="color: #000;font-weight: 500;pointer-events:none;line-height: 45px;display:flex;justify-content: space-between;flex-direction:column;float: left;margin-left: 2%;text-align: left;">
-                                <div>基于Springboot</div>
-                                <div style="font-size: 30px;margin-top: 40px;">{{ item.titleName }}</div>
-                                <span style="font-size: 14px;border:1px solid #000;text-align: center;">前后端分离</span>
-
-                            </div>
-                        </div>
-
-                    </el-row>
-                </div> -->
-
-
             </el-main>
 
         </el-container>
@@ -166,10 +109,13 @@
 
                 contentDataList: [{
                     mainTile: "",
-                    children: []
+                    children: [{
+                        mainTile:""
+                    }]
                 }],
                 src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-
+                carouselHeight: 0,
+                screenWidth: 0
             };
         },
         mounted() {
@@ -210,6 +156,15 @@
                 })
             },
             // 分类数据获取 End
+
+            toDetail(id,path){
+                this.$router.push({
+                    path: "/detail"+path,
+                    query: {
+                        id: id,
+                    },
+                });
+            },
 
             handleClick(tab, event) {
                 console.log(tab, event);
@@ -374,6 +329,15 @@
         transition: all 1s;
     } */
 
+    .item-title {
+            /* width: 65%; */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            font-size: 22px;
+    
+        }
     .title-content {
         position: relative;
         line-height: 1.4em;
