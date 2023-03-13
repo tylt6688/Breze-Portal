@@ -14,12 +14,13 @@ const routes = [
     },
   },
   {
-    path: '/detail',
+    path: '/detail/',
     name: 'Detail',
     component: () => import('../views/detail/Detail.vue'),
     meta: {
       title: "详情"
     },
+    alias:['/detail/baseZhishi','/detail/learnComputer','/detail/teachShare','/detail/qiyuan']
   }
   
 ]

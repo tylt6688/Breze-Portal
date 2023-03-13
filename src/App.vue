@@ -100,7 +100,7 @@
 				activeIndex: '0',
 				input3: "",
 				topBannerNavBg: {
-					background: ''
+					background: 'linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.0 ))'
 				},
 				menuList: [],
 				defaultProps: {
