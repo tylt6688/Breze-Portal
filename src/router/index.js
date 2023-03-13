@@ -39,7 +39,7 @@ VueRouter.prototype.push = function push(to) {
 router.beforeEach((to, from, next)=>{
   console.log("router",to)
   // TODO 每个页面的浏览器标签名称显示
-  to.meta.title && (document.title = "清枫Breze—" + to.meta.title);
+  // to.meta.title && (document.title = "清枫Breze—" + to.meta.title);
   next();
 }
 

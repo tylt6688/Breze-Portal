@@ -96,9 +96,7 @@
 		name: "Index",
 		data() {
 			return {
-
 				drawer: false,
-
 				activeIndex: '0',
 				input3: "",
 				topBannerNavBg: {
