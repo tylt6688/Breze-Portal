@@ -14,9 +14,23 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                         <el-carousel :interval="4000" :height="carouselHeight+'px'">
                             <template :slot-scope="banners">
-                                <el-carousel-item v-for="(item, index) in banners" :key="index">
-                                    <el-image style="width: 100%; height: 100%" fit="fill" :src="item.url"
-                                        :alt="item.alt" :preview-src-list="[item.url]"></el-image>
+                                <el-carousel-item v-for="(item, index) in banners1" :key="index">
+                                    <div style="color:#fff">
+                                        <el-image style="width: 100%; height: 100%" fit="fill" :src="item.url"
+                                            :alt="item.alt"></el-image>
+                                        <h1
+                                            style="position: absolute; bottom: 50%; left: 8%;opacity:0.9;text-align:left;border-radius:4px;">
+                                            {{item.title}}
+                                        </h1>
+                                        <h4
+                                            style="position: absolute; top: 45%; left: 8%;opacity:0.9;text-align:left;border-radius:4px;width: 30%;">
+                                            {{item.info}}
+                                        </h4>
+                                        <el-button type="primary"
+                                            style="position: absolute; bottom: 25%; left: 8%;opacity:0.9;text-align:left;border-radius:4px;">
+                                            {{item.btn}}</el-button>
+
+                                    </div>
                                 </el-carousel-item>
                             </template>
                         </el-carousel>
@@ -26,7 +40,7 @@
                 <el-divider><i class="el-icon-help"></i>科技拥抱生活</el-divider>
 
                 <!-- 分类内容 -->
-                <div style="background:#ffffff;margin:2% 0;padding-bottom:2%">
+                <el-row style="background:#e7f8ff;margin:2% 0;padding-bottom:2%">
                     <div style="white-space: pre-wrap; font-size: 48px; color: rgb(23, 26, 29);padding: 3% 0">
                         {{this.contentDataList[0].mainTitle}}
                     </div>
@@ -54,37 +68,78 @@
                         </div>
 
                     </div>
-                </div>
-                <div style="background:#ffffff;padding-bottom:2%">
+                </el-row>
+                <el-row style="background:#e7f8ff;padding-bottom:2%;margin: 2% 0;">
                     <div style="white-space: pre-wrap; font-size: 48px; color: rgb(23, 26, 29);padding: 3% 0">
                         {{this.contentDataList[1].mainTitle}}
                     </div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                         <el-tab-pane :label="item.mainTitle.toString()" :name="index.toString()"
                             v-for="(item,index) in this.contentDataList[1].children" :key="index">
-                            <el-row type="flex" justify="center" style="margin:0 10%;border-radius:16px">
-                                <el-col :span="12">
-                                    <el-image style="border-radius:16px 0 0 16px" :src="item.imgUrl"></el-image>
-                                </el-col>
-                                <el-col :span="12"
-                                    style="color:#ffffff;background-image: url('https://i-1.lanrentuku.com/2020/12/29/20d1e770-88b4-4574-867f-a3bddc433e9d.jpg?imageView2/2/w/500');border-radius:0 16px 16px 0">
-                                    <div
-                                        style="display:flex;justify-content: center;flex-direction:column;align-items:center;height:100%;margin: 0 5%;text-align: left;">
+                            <el-row type="flex" style="border-radius:16px;padding: 2% 0;">
+
+                                <el-col :span="5" :offset="3" style="color:#000;border-radius:0 16px 16px 0">
+                                    <div style="text-align: left;">
                                         <div class="item-title">{{item.subtitle}}</div>
-                                        <div class="title-content">
-                                            {{item.titleInfo}}
-                                        </div>
                                         <div>
-                                            <el-button class="title-button" @click="toDetail(item.id,item.routerPath)" type="primary">查看详情></el-button>
+                                            <el-button type="primary" class="title-button"
+                                                @click="toDetail(item.id,item.routerPath)">查看详情</el-button>
                                         </div>
+                                        <div class="title-content">
+                                            sdgewhsdhsdg好的实际发货时间肯定更好的数据库给你吧科技的估计还得上课
+                                        </div>
+                                        <div class="title-content">
+                                            sdhwehsdfsd
+                                        </div>
+                                        <div class="title-content">
+                                            sdfgskjdgnsdk
+                                        </div>
+
                                     </div>
 
+                                </el-col>
+                                <el-col :span="12" :offset="1">
+                                    <el-image style="border-radius:2%;box-shadow: 10px 10px 20px rgba(0,0,0,.5);"
+                                        :src="item.imgUrl"></el-image>
                                 </el-col>
                             </el-row>
                         </el-tab-pane>
 
                     </el-tabs>
-                </div>
+                </el-row>
+                <el-row style="background:#e7f8ff;padding:2% 5%;margin: 2% 0;">
+                    <div style="white-space: pre-wrap; font-size: 48px; color: rgb(23, 26, 29);padding: 3% 0">
+                        {{this.contentDataList[2].mainTitle}}
+                    </div>
+                    <!-- <el-col :span="4" :offset="1" style="height: 400px;"> -->
+                    <div style="display:flex;justify-content: center;">
+                        <div class="company-culture" style="background:#666666" v-for="(item, index) in this.contentDataList[2].children"
+                            :key="index" :style="getStyle(index,item)" @mouseenter="onMouseEnter(index)"
+                            @mouseleave="onMouseLeave">
+                            <div style="padding: 10% 0;text-align: left;">
+                                <div v-if="activeIndex === index">
+                                    <div style="font-size: 36px;color: rgba(0,0,0,1);font-weight: bold;">{{item.mainTitle}}
+                                    </div>
+                                    <div style="font-size: 16px;color: rgba(0,0,0,1);" v-for="(info, index) in item.titleInfoList" :key="index">
+                                        {{info}}</div>
+                                </div>
+                                <div v-else>
+                                    <div style="font-size: 14px;color: rgba(0,0,0,1);">
+                                        {{item.mainTitle}}</div>
+                                    <div style="font-size: 30px;color: rgba(0,0,0,1);font-weight: bold;">{{item.subtitle}}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div style="width:100%;text-align: left;" v-if="activeIndex === index">
+                                <el-button type="primary" class="title-button"
+                                    @click="toDetail(item.id,item.routerPath)">
+                                    查看详情</el-button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- </el-col> -->
+                </el-row>
             </el-main>
 
         </el-container>
@@ -102,6 +157,31 @@
 
                 banners: [],
 
+                banners1:[{
+                    url: require('@/assets/images/banner1.jpg'),
+                    title:"工业自动化发展",
+                    info:"自动化在信息化与工业化之间发挥着桥梁和纽带作用，面对我国传统工业的落后现状，国家将加大技术改造的步伐，使我国工业技术向多样化、自动化、智能化方向发展。",
+                    btn:"查看详情"
+                },
+                {
+                    url: require('@/assets/images/banner2.jpg'),
+                    title:"工业自动化",
+                    info:"工业自动化在工业生产中采用自动控制、自动调整装置，用以代替人工操纵机器和机器体系加工生产",
+                    btn:"查看详情"
+                },
+                {
+                    url: require('@/assets/images/banner3.jpeg'),
+                    title:"提高工业自动化",
+                    info:"生产设备可以根据自身环境或状况作出调整，自主安排生产任务，或者灵活的调整自己的控制算法，提高机械化系统的智能生产能力，",
+                    btn:"查看详情"
+                },
+                {
+                    url: require('@/assets/images/banner4.jpg'),
+                    title:"“工业4.0”+“工业自动化”",
+                    info:"“工业时代”“自动化生产”已成为时代的主题。很多装备制造业已经用到了自动化生产机械设备，“工业4.0”+“工业自动化” 推动整个自动化行业生产制造商",
+                    btn:"查看详情"
+                }
+                ],
 
                 topBannerNavBg: {
                     background: ''
@@ -110,12 +190,41 @@
                 contentDataList: [{
                     mainTile: "",
                     children: [{
-                        mainTile:""
+                        mainTile: ""
                     }]
                 }],
                 src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
                 carouselHeight: 0,
-                screenWidth: 0
+                screenWidth: 0,
+
+                items: [0, 1, 2,3], // 这里可以是您的数据，或者根据实际情况修改
+                activeIndex: 0, // 跟踪当前鼠标移入的div索引
+
+                bottomCon:[{
+                    maintitle:"工业视觉软件",
+                    subtitle:"致力于为客户提供操作流程简单易搭建的视觉软件工具",
+                    info1:"易用性高，通用识别能力强",
+                    info2:"提供实时仿真验证",
+                    info3:"单目标精定位",
+                    url: require('@/assets/images/home_pic_vision_nor@2x.png'),
+                },
+                {
+                    maintitle:"工业智能相机",
+                    subtitle:"针对不同应用场景物体可输出高质量点云数据图",
+                    info1:"采用主动 DLP 结构光技术，拍摄速度快",
+                    info2:"成像精细、方案成熟稳定",
+                    info3:"精度高、速度快、环境自适应性强",
+                    url: require('@/assets/images/home_pic_sense_nor@2x.png'),
+                },
+                {
+                    maintitle:"智能视觉",
+                    subtitle:"跟据客户实际视觉需求匹配软硬件集成一体化设备",
+                    info1:"低成本、高效率的完成灵活多变",
+                    info2:"灵活支持工厂智能化升级中的复杂工艺",
+                    info3:"智能3D视觉算法与移动策略",
+                    url: require('@/assets/images/home_pic_dexone_nor@2x.png'),
+                }
+                ],
             };
         },
         mounted() {
@@ -152,20 +261,39 @@
                 }
                 index.getContentList(param).then((res) => {
                     this.contentDataList = res.data.result.data;
-                    console.log("contentDataList", this.contentDataList)
+                    console.log(this.contentDataList)
                 })
             },
             // 分类数据获取 End
 
-            toDetail(id,path){
+            toDetail(id, path) {
+                console.log("path",path)
                 this.$router.push({
-                    path: "/detail"+path,
+                    path: "/detail" + path,
                     query: {
                         id: id,
                     },
+                    
                 });
             },
-
+            onMouseEnter(index) {
+                this.activeIndex = index; // 设置当前鼠标移入的div索引
+            },
+            onMouseLeave() {
+                // this.activeIndex = 0; // 重置当前鼠标移入的div索引为null
+            },
+            getStyle(index,item) {
+                if (this.activeIndex === index) {
+                    return {
+                        width: "50%",
+                        backgroundImage: 'url('+item.imgUrl+')'
+                    }; // 当前鼠标移入的div宽度变大
+                }
+                return {
+                    width: "20%",
+                    backgroundImage: 'url('+item.imgUrl+')'
+                }; // 其他div宽度还原
+            },
             handleClick(tab, event) {
                 console.log(tab, event);
             },
@@ -181,13 +309,15 @@
     }
 
     .page {
-        background: #F2F4F8;
+        background: #fff;
+        text-align: center;
     }
 
     .el-main {
         text-align: center;
         padding: 0 0;
     }
+
     body>>>.el-container {
         margin-bottom: 40px;
     }
@@ -221,7 +351,7 @@
     .image-animate:hover::before {
         height: 70%;
         border-radius: 0 0 150px 150px;
-        box-shadow: 0 0 20px #000;
+        box-shadow: 0 0 10px #000;
         opacity: 1;
     }
 
@@ -328,23 +458,25 @@
         margin: 0 1%;
         transition: all 1s;
     } */
-
     .item-title {
-            /* width: 65%; */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -o-text-overflow: ellipsis;
-            font-size: 22px;
-    
-        }
+        /* width: 65%; */
+        /* text-align: left; */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        font-size: 32px;
+
+    }
+
     .title-content {
+        width: 70%;
         position: relative;
         line-height: 1.4em;
         font-size: 16px;
-        height: 7.2em;
         overflow: hidden;
-        margin: 5% 0;
+        margin: 5% 0% 2% 2%;
+        /* text-align: left; */
     }
 
     /* .row-content {
@@ -354,13 +486,9 @@
         align-items: center;
         justify-content: space-between;
     } */
-
-
     .title-button {
         margin-top: 5%;
-        width: 100%;
     }
-
     ::v-deep .el-tabs__nav {
         display: flex;
         width: 100%;
@@ -378,6 +506,21 @@
     /* .content-col {
         margin: 2% 0;
     } */
+
+    .company-culture {
+        display: inline-block;
+        width: 20%;
+        height: 300px;
+        padding: 5%;
+        margin: 0 2%;
+        transition: width 0.6s;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, .5);
+        border-radius: 30px;
+    }
+
+    .company-culture:hover {
+        width: 50%;
+    }
 
     @media (max-width:1200px) {
         .title-content {
