@@ -3,11 +3,11 @@
 		<el-header style="width:100%;position: fixed;top: 0;z-index:10">
 			<el-row type="flex" justify="space-around" class="header-row" :style="topBannerNavBg">
 				<div class="log-col" style="position:relative">
-					<el-image class="logo-image" :src="require('@/assets/images/logo.png')" fit="fill">
+					<el-image class="logo-image" :src="require('@/assets/images/logo11.png')" fit="fill">
 					</el-image>
 				</div>
-				<el-menu :default-active="activeIndex" background-color="rgba(0,0,0,0.2)" text-color="#fff"
-					active-text-color="#1c88cf" style="border: 0;background: transparent;"
+				<el-menu :background-color="submenuBg" text-color="#fff"
+					active-text-color="#fff" style="border: 0;background: transparent;"
 					class="el-menu-demo menu-block" mode="horizontal" @select="handleSelect">
 					<div v-for="(item,index) in this.menuList" :key="index">
 						<el-menu-item :index="(index).toString()" v-if="item.navbarChildren.length === 0">
@@ -30,13 +30,17 @@
 						<el-button slot="append" icon="el-icon-search"></el-button>
 					</el-input>
 				</div>
+				<!-- <div class="user-login">
+					<el-link href="https://element.eleme.io" :underline="false" target="_blank">登录</el-link> |
+					<el-link href="https://element.eleme.io" :underline="false" target="_blank">注册</el-link>
+				</div> -->
 
 				<div class="header-title min-menu">
 					<i class="el-icon-menu menu-i" @click="drawer = true"></i>
 				</div>
 
 			</el-row>
-			<el-drawer :visible.sync="drawer" :modal="false" size="100%" direction="rtl" :show-close="false">
+			<el-drawer :visible.sync="drawer" :modal="false" size="30%" direction="rtl" :show-close="false">
 				<el-tree node-key="id" highlight-current :data="menuList" :props="defaultProps"
 					@node-click="handleNodeClick"></el-tree>
 				<!-- <el-row type="flex" class="drawer-row" v-for="(item,index) in menuList" :key="index">
@@ -66,10 +70,11 @@
 
 		</el-header>
 		<router-view />
+
 		<el-footer style="height:100%;">
 			<el-row class="footer-wrapper">
 				<div>
-					<el-image style="width:100px;height:100px" :src="require('@/assets/images/logo.png')" fit="fill">
+					<el-image style="width:100px;height:100px" :src="require('@/assets/images/logo11.png')" fit="fill">
 					</el-image>
 				</div>
 				<div style="width:80%;display: flex;justify-content: space-around;">
@@ -86,7 +91,7 @@
 				</div>
 
 			</el-row>
-			<div style="position: relative;bottom: 1%;">© Breze 2022. All rights reserved.</div>
+			<div style="position: relative;bottom: 1%;">BrezeⒸ版权公告© 2023. 青枫网络工作室版权所有</div>
 		</el-footer>
 	</div>
 </template>
@@ -102,6 +107,7 @@
 				topBannerNavBg: {
 					background: 'linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.0 ))'
 				},
+				submenuBg: 'rgba(0,0,0,0.2)',
 				menuList: [],
 				defaultProps: {
 					children: 'navbarChildren',
@@ -115,8 +121,8 @@
 		},
 		mounted() {
 			this.getNavbarData(0);
-				this.getFooterNavbar(1);
-				window.addEventListener('scroll', this.handleScroll) // 监听页面滚动
+			this.getFooterNavbar(1);
+			window.addEventListener('scroll', this.handleScroll) // 监听页面滚动
 		},
 		methods: {
 			// 滚动页面时触发导航变色
@@ -125,9 +131,11 @@
 				// 设置背景颜色的透明度
 				if (scrollTop >= 200) {
 					this.topBannerNavBg.background = 'rgba(0,0,0,.85)' // scrollTop + 多少根据自己的需求设置
+					this.submenuBg = 'rgba(0,0,0,.85)'
 				} else if (scrollTop === 0) {
 					this.topBannerNavBg.background =
 						'linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.0 ))' // 设置回到顶部时，背景颜色为透明
+					this.submenuBg = 'rgba(0,0,0,0.2)'
 				}
 			},
 			/**
@@ -178,7 +186,7 @@
 				}
 				this.$router.push({
 					path: path,
-					
+
 				});
 			},
 			handleNodeClick(data) {
@@ -232,7 +240,8 @@
 	.el-footer {
 		text-align: center;
 		padding: 1% 0;
-		background: #e9e9e9;
+		background: #303030;
+		color: #B9B9B9;
 	}
 
 	.menu-block {
@@ -284,19 +293,17 @@
 		color: #1c88cf !important;
 	}
 
-	.el-menu>>>.el-menu-item.is-active {
-		background: transparent !important;
-		color: #1c88cf !important;
-	}
-
-	.el-menu>>>.el-submenu__title.is-active .el-submenu__title {
-		background: transparent !important;
-		color: #1c88cf !important;
-	}
-
-
 	.search-input {
 		margin-top: 12px;
+	}
+
+	.user-login {
+		margin-top: 20px;
+		color: #fff;
+	}
+
+	.user-login .el-link.el-link--default {
+		color: #fff;
 	}
 
 	.search-input>>>input,
@@ -369,6 +376,9 @@
 
 	.footer-link {
 		margin: 10% 0%;
+	}
+	.el-link.el-link--default {
+		color: #B9B9B9;
 	}
 
 	@media(max-width: 992px) {
